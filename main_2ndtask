@@ -1,0 +1,34 @@
+from rational_list import RationalList
+from rational import Rational
+
+def parse_number(token):
+    token = token.strip()
+    if '/' in token:
+        return Rational(token)
+    else:
+        return Rational(int(token))
+
+def process_file(filename):
+    rlist = RationalList()
+    with open(filename, 'r') as file:
+        for line in file:
+            if line.strip():
+                tokens = line.strip().split()
+                for token in tokens:
+                    rlist += parse_number(token)
+    return rlist.sum()
+
+def main():
+    input_files = ["inputs/input01.txt", "inputs/input02.txt", "inputs/input03.txt"]
+    output_file = "outputs/output.txt"
+
+    with open(output_file, 'w') as out:
+        for file in input_files:
+            try:
+                result = process_file(file)
+                out.write(f"{file}: {result} = {result()}\n")
+            except Exception as e:
+                out.write(f"{file}: Помилка обробки - {e}\n")
+
+if __name__ == "__main__":
+    main()
